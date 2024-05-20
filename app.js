@@ -3,13 +3,13 @@ const app = express();
 const morgan = require ('morgan');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
+app.use(morgan('dev'));
 
-const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/users')
 const itemRoutes = require('./api/routes/items')
-
-app.use(morgan('dev'));
+const transactionRoutes = require('./api/routes/transactions')
+const { verifyToken } = require('./utils/jwt');
 
 mongoose.connect('mongodb+srv://petark7:'+ 
 process.env.MONGO_ATLAS_PASSWORD + 
@@ -34,9 +34,9 @@ app.use(bodyParser.json());
 
 // Routes which should handle requests
 app.use('/users', userRoutes)
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
-app.use('/items', itemRoutes);
+app.use('/orders', verifyToken, orderRoutes);
+app.use('/items', verifyToken, itemRoutes);
+app.use('/transactions', verifyToken, transactionRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
