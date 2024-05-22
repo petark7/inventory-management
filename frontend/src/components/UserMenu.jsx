@@ -33,7 +33,7 @@ const AccountMenu = () => {
 						aria-expanded={open ? 'true' : undefined}
 						onClick={handleClick}
 					>
-						<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+						<Avatar sx={{ width: 32, height: 32 }}>P</Avatar>
 					</IconButton>
 				</Tooltip>
 			</Box>

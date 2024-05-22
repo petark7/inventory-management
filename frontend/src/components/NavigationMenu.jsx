@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Outlet } from 'react-router-dom';
 import { mainListItems } from '../pages/navigation-menu/listItems';
 import UserMenu from './UserMenu';
 
@@ -132,10 +133,12 @@ const NavigationMenu = () => {
 								: theme.palette.grey[900],
 						flexGrow: 1,
 						height: '100vh',
+						padding: '40px',
 						overflow: 'auto'
 					}}
 				>
 					<Toolbar />
+					<Outlet />
 				</Box>
 			</Box>
 		</ThemeProvider>

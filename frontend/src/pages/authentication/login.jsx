@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import axios from 'axios';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axiosInstance from '../../axios/axiosInstance';
 

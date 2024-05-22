@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 app.use(morgan('dev'));
 
-const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/users')
 const itemRoutes = require('./api/routes/items')
 const transactionRoutes = require('./api/routes/transactions')
@@ -34,7 +33,6 @@ app.use(bodyParser.json());
 
 // Routes which should handle requests
 app.use('/users', userRoutes)
-app.use('/orders', verifyToken, orderRoutes);
 app.use('/items', verifyToken, itemRoutes);
 app.use('/transactions', verifyToken, transactionRoutes);
 
