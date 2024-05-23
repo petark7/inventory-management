@@ -5,16 +5,31 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { verifyToken } = require('../../utils/jwt')
 
+// This route fetches user if userID is provided or returns all users if none provided
 router.get('/', verifyToken, async (req, res) => {
+   if (req.body.userID) {
     try {
-        let users = await User.find();
-        res.status(201).json(
+        let user = await User.findById(req.userId).select('-password');
+        res.status(200).json(
             { 
-            message: 'Users fetched successfully',
-            users: users 
+            message: 'User fetched successfully',
+            user: user 
         });
     } catch (error) {
         res.status(500).json({ error: error });
+    }
+   } else
+    {
+            try {
+                let users = await User.find();
+                res.status(200).json(
+                    { 
+                    message: 'Users fetched successfully',
+                    users: users 
+                });
+            } catch (error) {
+                res.status(500).json({ error: error });
+            }
     }
 });
 

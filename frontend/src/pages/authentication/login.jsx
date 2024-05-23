@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,11 +9,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import axiosInstance from '../../axios/axiosInstance';
 
 const defaultTheme = createTheme();
 
 const Login = () => {
+	const navigate = useNavigate();
+
 	async function handleSubmit(event) {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
@@ -28,11 +33,26 @@ const Login = () => {
 				password: data.get('password')
 			});
 
-			console.log(response.data);
+			if (response.data.token) {
+				Cookies.set('authentication', response.data.token, new Date(Date.now() + 60 * 60 * 1000)); // Set cookie that expires in 1h
+			}
+
+			console.log(response.data.token);
 		} catch (error) {
 			console.error('Error logging in:', error.response ? error.response.data : error.message);
 		}
 	}
+
+	useEffect(() => {
+		async function getUserInfo() {
+			const response = await axiosInstance.get('/users');
+			if (response.status) {
+				navigate('/');
+			}
+		}
+
+		getUserInfo();
+	}, [navigate]);
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
