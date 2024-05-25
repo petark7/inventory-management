@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { verifyToken, generateToken } = require('../../utils/jwt')
+const { verifyToken, generateAccessToken, generateRefreshToken } = require('../../utils/jwt')
 
 // This route fetches user if userID is provided or returns all users if none provided
 router.get('/', verifyToken, async (req, res) => {
@@ -64,11 +64,43 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = generateToken(user._id);
-        res.json({ token });
+        const accessToken = generateAccessToken(user._id);
+        const refreshToken = generateRefreshToken(user._id);
+
+        // Save the refresh token in a cookie
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // use 'secure' in production
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        res.json({ accessToken });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: error });
     }
 });
+
+router.post('/token', async (req, res) => {
+    const cookies = req.cookies;
+    if (!cookies.jwt) return res.sendStatus(401);
+
+    const refreshToken = cookies.jwt;
+    try {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+        const newAccessToken = generateAccessToken(decoded.userId);
+
+        res.json({ accessToken: newAccessToken });
+    } catch (error) {
+        res.status(403).json({ message: 'Invalid refresh token.' });
+    }
+});
+
+router.post('/logout', (req, res) => {
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production' });
+    res.status(200).json({ message: 'Logged out successfully' });
+});
+
 
 module.exports = router;
