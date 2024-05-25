@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require ('morgan');
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 app.use(morgan('dev'));
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
