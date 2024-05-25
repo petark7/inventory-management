@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { verifyToken } = require('../../utils/jwt')
+const { verifyToken, generateToken } = require('../../utils/jwt')
 
 // This route fetches user if userID is provided or returns all users if none provided
 router.get('/', verifyToken, async (req, res) => {
@@ -64,15 +64,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign(
-            { 
-                userId: user._id 
-            }, 
-            process.env.JWT_SECRET, 
-            { 
-                expiresIn: '1h' 
-            }
-        );
+        const token = generateToken(user._id);
         res.json({ token });
     } catch (error) {
         res.status(500).json({ error: error });
