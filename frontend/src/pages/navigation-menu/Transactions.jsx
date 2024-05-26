@@ -2,21 +2,27 @@ import { useState } from 'react';
 import {
 	Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 } from '@mui/material';
-import axiosInstance from '../../axios/axiosInstance';
+import { toast } from 'react-toastify';
+import axiosInstance from '../../axios/apiClient';
 import formatDate from '../../utils/formatDate';
 
 const Transactions = () => {
 	const [transactions, setTransactions] = useState([]);
 
 	async function fetchTransactions() {
-		const transactions = await axiosInstance.get('/transactions');
-		setTransactions(transactions.data);
+		try {
+			const response = await axiosInstance.get('/transactions');
+			setTransactions(response.data);
+			toast.success('Transactions fetched successfully');
+		} catch {
+			toast.error('Failed to fetch transactions');
+		}
 	}
 
 	return (
 		<>
 			<div>Transactions</div>
-			<button onClick={() => fetchTransactions()}>Fetch transactions</button>
+			<button onClick={fetchTransactions}>Fetch transactions</button>
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>
@@ -31,18 +37,15 @@ const Transactions = () => {
 					</TableHead>
 					<TableBody>
 						{transactions.map(row => (
-							<TableRow
-								key={row._id}
-								sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-							>
-								<TableCell component="th" scope="row">
-									{row._id}
-								</TableCell>
+							<TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+								<TableCell component="th" scope="row">{row._id}</TableCell>
 								<TableCell align="right">{row.createdBy.username}</TableCell>
 								<TableCell align="right">{formatDate(row.date)}</TableCell>
 								<TableCell align="right">{row.type}</TableCell>
 								<TableCell align="right">{row.quantity}</TableCell>
-								<TableCell align="right"><button onClick={() => console.log(row._id)}>More info</button></TableCell>
+								<TableCell align="right">
+									<button onClick={() => console.log(row._id)}>More info</button>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
