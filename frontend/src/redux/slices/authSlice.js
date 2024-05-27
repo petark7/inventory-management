@@ -4,7 +4,8 @@ const initialState = {
 	accessToken: null,
 	isAuthenticated: false,
 	user: null,
-	error: null
+	error: null,
+	initialLoad: true
 };
 
 const authSlice = createSlice({
@@ -17,12 +18,15 @@ const authSlice = createSlice({
 		loginFailure: (state, action) => {
 			state.isAuthenticated = false;
 			state.error = action.payload;
+			state.initialLoad = false;
 		},
 		setCredentials: (state, action) => {
 			const { user, accessToken } = action.payload;
+			state.isAuthenticated = false;
 			state.user = user;
 			state.accessToken = accessToken;
 			state.error = null;
+			state.initialLoad = false;
 		},
 		logout: state => {
 			state.isAuthenticated = false;

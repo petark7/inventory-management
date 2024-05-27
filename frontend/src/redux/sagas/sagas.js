@@ -23,6 +23,7 @@ function * handleAppLoad() {
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
 			// Handle the case where the refresh token is invalid or missing
+			yield put(loginFailure(error.message));
 			console.warn('No valid refresh token on app load');
 		} else {
 			console.error('Failed to fetch access token on app load:', error);

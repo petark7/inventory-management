@@ -19,13 +19,13 @@ const defaultTheme = createTheme();
 const Login = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { accessToken } = useSelector(state => state.auth);
+	const { accessToken, initialLoad } = useSelector(state => state.auth);
 
 	useEffect(() => {
-		if (accessToken) {
+		if (accessToken && !initialLoad) {
 			navigate('/');
 		}
-	}, [accessToken, navigate]);
+	}, [accessToken, initialLoad, navigate]);
 
 	const handleSubmit = async event => {
 		event.preventDefault();

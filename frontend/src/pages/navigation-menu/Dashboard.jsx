@@ -21,7 +21,7 @@ const Dashboard = () => {
 
 	const [items, setItems] = useState([]);
 
-	console.log(state.user);
+	console.log(user);
 	return (
 		<>
 			<button onClick={fetchData}>Fetch data</button>

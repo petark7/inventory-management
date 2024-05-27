@@ -13,7 +13,13 @@ const MainRoutes = {
 	/>,
 	children: [
 		{
-			path: 'dashboard',
+			path: '/',
+			element: <ProtectedRoute
+				element={<Dashboard />}
+			/>
+		},
+		{
+			path: '/dashboard',
 			element: <ProtectedRoute
 				element={<Dashboard />}
 			/>

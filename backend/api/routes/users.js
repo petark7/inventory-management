@@ -75,7 +75,13 @@ router.post('/login', async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        res.json({ accessToken });
+         // Remove password from user object before sending response
+         const userResponse = {
+            ...user.toObject(),
+            password: undefined
+        };
+
+        res.json({ accessToken, user: userResponse });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error });
