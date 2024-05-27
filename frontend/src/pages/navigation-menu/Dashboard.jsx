@@ -6,25 +6,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import axiosInstance from '../../axios/apiClient';
 import store from '../../redux/store';
 
 const Dashboard = () => {
 	const state = store.getState();
-	const accessToken = state.auth.accessToken;
+	const { user } = useSelector(state => state.auth);
 
 	async function fetchData() {
-		console.log('access token', accessToken);
 		const response = await axiosInstance.get('/items');
 		setItems(response.data);
 	}
 
 	const [items, setItems] = useState([]);
 
-	console.log(items);
+	console.log(state.user);
 	return (
 		<>
 			<button onClick={fetchData}>Fetch data</button>
+			<h1>Logged in: {JSON.stringify(user)}</h1>
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>

@@ -19,7 +19,7 @@ process.env.MONGO_ATLAS_PASSWORD +
 )
 
 const corsOptions = {
-    origin: 'http://localhost:5174', // Replace with client's origin
+    origin: 'http://localhost:5173', // Replace with client's origin
     credentials: true, // This allows the server to accept cookies from the client
   };
   

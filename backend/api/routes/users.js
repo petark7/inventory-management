@@ -91,7 +91,13 @@ router.post('/token', async (req, res) => {
         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
         const newAccessToken = generateAccessToken(decoded.userId);
 
-        res.json({ accessToken: newAccessToken });
+         // Fetch user data
+         const user = await User.findById(decoded.userId).select('-password');
+         if (!user) {
+             return res.status(404).json({ message: 'User not found' });
+         }
+ 
+         res.json({ accessToken: newAccessToken, user });
     } catch (error) {
         res.status(403).json({ message: 'Invalid refresh token.' });
     }
