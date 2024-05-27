@@ -1,0 +1,109 @@
+{
+  "extends": "xo-react",
+  "envs": "browser",
+  "rules": {
+    "n/file-extension-in-import": [
+      2,
+      "never",
+      {
+        ".js": "never",
+        ".jsx": "never",
+        ".css": "always",
+        ".png": "always",
+        ".jpg": "always",
+        ".jpeg": "always",
+        "": "always"
+      }
+    ],
+    "import/extensions": [
+      2,
+      "never",
+      {
+        "js": "never",
+        "jsx": "never",
+        "css": "always",
+        "png": "always",
+        "jpg": "always",
+        "jpeg": "always"
+      }
+    ],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-no-undef": "off",
+    "react/jsx-tag-spacing": [
+      2,
+      {
+        "closingSlash": "never",
+        "beforeSelfClosing": "always",
+        "afterOpening": "never",
+        "beforeClosing": "never"
+      }
+    ],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function"
+      }
+    ],
+    "jsx-quotes": [
+      2,
+      "prefer-double"
+    ],
+    "object-curly-spacing": [
+      2,
+      "always"
+    ],
+    "comma-dangle": [
+      2,
+      "never"
+    ],
+    "unicorn/filename-case": [
+      2,
+      {
+        "case": "camelCase",
+        "ignore": [
+          "\\b\\w+\\.test\\.(js|jsx)$"
+        ]
+      }
+    ],
+    "n/prefer-global/process": [
+      2,
+      "always"
+    ],
+    "no-warning-comments": [
+      2,
+      {
+        "terms": []
+      }
+    ],
+    "react/state-in-constructor": [
+      2,
+      "always"
+    ],
+    "react/jsx-no-useless-fragment": [
+      2,
+      {
+        "allowExpressions": true
+      }
+    ],
+    "new-cap": [
+      2,
+      {
+        "capIsNewExceptions": [
+          "Loadable"
+        ]
+      }
+    ],
+    "object-shorthand": [
+      2,
+      "properties"
+    ],
+    "react/boolean-prop-naming": [
+      2,
+      {
+        "rule": "^(is|has|show)[A-Z]([A-Za-z0-9]?)+"
+      }
+    ],
+    "react/no-array-index-key": "off"
+  }
+}

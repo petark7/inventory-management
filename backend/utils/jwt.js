@@ -1,10 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_ACCESS_SECRET;
 
 // Generate a JWT token
-const generateToken = (userId) => {
+const generateAccessToken = (userId) => {
     return jwt.sign({ userId }, secret, { expiresIn: '1h' });
+};
+
+const generateRefreshToken = (userId) => {
+    return jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
 };
 
 // Middleware to verify JWT token
@@ -19,8 +23,9 @@ const verifyToken = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
+        console.log(error)
         res.status(400).json({ message: 'Invalid token.' });
     }
 };
 
-module.exports = { generateToken, verifyToken };
+module.exports = { generateAccessToken, generateRefreshToken, verifyToken };

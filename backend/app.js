@@ -1,11 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+
 const morgan = require ('morgan');
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 app.use(morgan('dev'));
 
-const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/users')
 const itemRoutes = require('./api/routes/items')
 const transactionRoutes = require('./api/routes/transactions')
@@ -16,25 +18,19 @@ process.env.MONGO_ATLAS_PASSWORD +
     '@nodejs-tutorial.pivaveq.mongodb.net/?retryWrites=true&w=majority&appName=nodejs-tutorial'
 )
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+const corsOptions = {
+    origin: 'http://localhost:5174', // Replace with client's origin
+    credentials: true, // This allows the server to accept cookies from the client
+  };
+  
+  app.use(cors(corsOptions));
 
-    if (req.method === "OPTIONS") {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-        return res.status(200).json({})
-    }
-
-    next();
-})
-
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
 // Routes which should handle requests
 app.use('/users', userRoutes)
-app.use('/orders', verifyToken, orderRoutes);
 app.use('/items', verifyToken, itemRoutes);
 app.use('/transactions', verifyToken, transactionRoutes);
 
