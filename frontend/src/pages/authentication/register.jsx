@@ -1,10 +1,7 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -43,7 +40,12 @@ const Register = () => {
 					<Typography component="h1" variant="h5">
 						Sign up
 					</Typography>
-					<Box noValidate component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
+					<Box
+						noValidate
+						component="form"
+						sx={{ mt: 3 }}
+						onSubmit={handleSubmit}
+					>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
 								<TextField

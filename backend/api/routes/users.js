@@ -75,7 +75,13 @@ router.post('/login', async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        res.json({ accessToken });
+         // Remove password from user object before sending response
+         const userResponse = {
+            ...user.toObject(),
+            password: undefined
+        };
+
+        res.json({ accessToken, user: userResponse });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: error });
@@ -91,7 +97,13 @@ router.post('/token', async (req, res) => {
         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
         const newAccessToken = generateAccessToken(decoded.userId);
 
-        res.json({ accessToken: newAccessToken });
+         // Fetch user data
+         const user = await User.findById(decoded.userId).select('-password');
+         if (!user) {
+             return res.status(404).json({ message: 'User not found' });
+         }
+ 
+         res.json({ accessToken: newAccessToken, user });
     } catch (error) {
         res.status(403).json({ message: 'Invalid refresh token.' });
     }

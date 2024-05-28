@@ -2,24 +2,38 @@ import Inventory from '../pages/navigation-menu/Inventory';
 import Dashboard from '../pages/navigation-menu/Dashboard';
 import Transactions from '../pages/navigation-menu/Transactions';
 import NavigationMenu from '../components/NavigationMenu';
+import ProtectedRoute from './ProtectedRoute';
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
 	path: '/',
-	element: <NavigationMenu />,
+	element: <ProtectedRoute
+		element={<NavigationMenu />}
+	/>,
 	children: [
 		{
-			path: 'dashboard',
-			element: <Dashboard />
+			path: '/',
+			element: <ProtectedRoute
+				element={<Dashboard />}
+			/>
+		},
+		{
+			path: '/dashboard',
+			element: <ProtectedRoute
+				element={<Dashboard />}
+			/>
 		},
 		{
 			path: 'inventory',
-			element: <Inventory />
+			element: <ProtectedRoute
+				element={<Inventory />}
+			/>
 		},
 		{
 			path: 'transactions',
-			element: <Transactions />
+			element: <ProtectedRoute
+				element={<Transactions />} />
 		}
 	]
 };

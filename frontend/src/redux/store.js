@@ -17,5 +17,6 @@ const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 store.dispatch(appLoaded());
+
 export { store };
 export default store;
