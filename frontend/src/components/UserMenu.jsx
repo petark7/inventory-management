@@ -7,12 +7,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/actions/authActions';
 
 const AccountMenu = () => {
 	const [anchorElement, setAnchorElement] = React.useState(null);
+	const dispatch = useDispatch();
 	const open = Boolean(anchorElement);
 	const handleClick = event => {
 		setAnchorElement(event.currentTarget);
@@ -20,6 +22,10 @@ const AccountMenu = () => {
 
 	const handleClose = () => {
 		setAnchorElement(null);
+	};
+
+	const handleLogout = () => {
+		dispatch(logout());
 	};
 
 	return (
@@ -79,7 +85,7 @@ const AccountMenu = () => {
 					Settings
 				</MenuItem>
 				<Divider />
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={handleLogout}>
 					<ListItemIcon>
 						<Logout fontSize="small" />
 					</ListItemIcon>

@@ -8,7 +8,9 @@ import {
 	loginFailure,
 	logout
 } from '../slices/authSlice';
-import { LOGIN_REQUEST, REFRESH_TOKEN_REQUEST, APP_LOADED } from '../actions/types';
+import {
+	LOGIN_REQUEST, REFRESH_TOKEN_REQUEST, APP_LOADED, LOGOUT_REQUEST
+} from '../actions/types';
 import initApiClient from '../../axios/initApiClient';
 
 let apiClient;
@@ -53,8 +55,18 @@ function * handleTokenRefresh() {
 		return accessToken;
 	} catch (error) {
 		yield put(logout());
-		toast.error(error.response.statusText);
 		throw error;
+	}
+}
+
+function * handleLogout() {
+	try {
+		yield call(apiClient.post.bind(apiClient), '/users/logout', {}, { withCredentials: true });
+		toast.success('Logout successful.');
+
+	} catch (error) {
+		toast.error('Logout failed', error);
+		console.error('Failed to log out:', error);
 	}
 }
 
@@ -63,6 +75,7 @@ function * watchAuth() {
 	yield takeEvery(LOGIN_REQUEST, handleLogin);
 	yield takeLatest(REFRESH_TOKEN_REQUEST, handleTokenRefresh);
 	yield takeLatest(APP_LOADED, handleAppLoad);
+	yield takeEvery(LOGOUT_REQUEST, handleLogout);
 }
 
 // Root saga

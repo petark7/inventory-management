@@ -8,10 +8,8 @@ import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import axiosInstance from '../../axios/apiClient';
-import store from '../../redux/store';
 
 const Dashboard = () => {
-	const state = store.getState();
 	const { user } = useSelector(state => state.auth);
 
 	async function fetchData() {
