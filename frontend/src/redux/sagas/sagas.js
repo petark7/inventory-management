@@ -41,7 +41,9 @@ function * handleLogin(action) {
 		yield put(setCredentials({ user, accessToken }));
 		toast.success('Login successful.');
 	} catch (error) {
-		toast.error('Login failed', error);
+		const { message } = error.response.data;
+		console.log(message)
+		toast.error(message);
 		yield put(loginFailure(error.message));
 	}
 }
@@ -63,7 +65,6 @@ function * handleLogout() {
 	try {
 		yield call(apiClient.post.bind(apiClient), '/users/logout', {}, { withCredentials: true });
 		toast.success('Logout successful.');
-
 	} catch (error) {
 		toast.error('Logout failed', error);
 		console.error('Failed to log out:', error);
