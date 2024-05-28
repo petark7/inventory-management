@@ -9,7 +9,6 @@ const ProtectedRoute = ({ element }) => {
 	const [componentToRender, setComponentToRender] = useState(<div>loading...</div>);
 
 	useEffect(() => {
-		console.log('isloggedin, initialload', isLoggedIn, initialLoad);
 		if (isLoggedIn) {
 			setComponentToRender(element);
 		} else if (!isLoggedIn && !initialLoad) {

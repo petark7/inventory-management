@@ -9,18 +9,45 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginRequest } from '../../redux/actions/authActions';
+import apiClient from '../../axios/apiClient';
 
 const defaultTheme = createTheme();
 
 const Register = () => {
-	const handleSubmit = event => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const { accessToken, initialLoad } = useSelector(state => state.auth);
+
+	const handleSubmit = async event => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget);
-		console.log({
+		const formData = ({
+			fullName: data.get('fullName'),
 			email: data.get('email'),
 			password: data.get('password')
 		});
+
+		try {
+			const response = await apiClient.post('/users/register', formData);
+			if (response.status === 201) {
+				toast.success(response.data.message);
+				dispatch(loginRequest({ email: formData.email, password: formData.password }));
+			}
+		} catch (error) {
+			toast.error(error.data.message);
+		}
 	};
+
+	useEffect(() => {
+		if (accessToken && !initialLoad) {
+			navigate('/');
+		}
+	}, [accessToken, initialLoad, navigate]);
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
@@ -47,25 +74,15 @@ const Register = () => {
 						onSubmit={handleSubmit}
 					>
 						<Grid container spacing={2}>
-							<Grid item xs={12} sm={6}>
+							<Grid item xs={12}>
 								<TextField
 									required
 									fullWidth
 									autoFocus
 									autoComplete="given-name"
-									name="firstName"
-									id="firstName"
-									label="First Name"
-								/>
-							</Grid>
-							<Grid item xs={12} sm={6}>
-								<TextField
-									required
-									fullWidth
-									id="lastName"
-									label="Last Name"
-									name="lastName"
-									autoComplete="family-name"
+									name="fullName"
+									id="fullName"
+									label="Full Name"
 								/>
 							</Grid>
 							<Grid item xs={12}>

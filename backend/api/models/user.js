@@ -2,6 +2,14 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      require: [true, "Name is required"],
+      match: [
+        /^[a-z ,.'-]+$/i,
+        "Name is invalid",
+      ]
+    },
     email: {
         type: String,
         required: [true, "Email address is required"],

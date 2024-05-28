@@ -23,7 +23,7 @@ function * handleAppLoad() {
 		const { accessToken, user } = response.data;
 		yield put(setCredentials({ user, accessToken }));
 	} catch (error) {
-		if (error.response && error.response.status === 401) {
+		if (error.response && (error.response.status === 403 || error.response.status === 401)) {
 			// Handle the case where the refresh token is invalid or missing
 			yield put(loginFailure(error.message));
 			console.warn('No valid refresh token on app load');
@@ -42,7 +42,6 @@ function * handleLogin(action) {
 		toast.success('Login successful.');
 	} catch (error) {
 		const { message } = error.response.data;
-		console.log(message)
 		toast.error(message);
 		yield put(loginFailure(error.message));
 	}

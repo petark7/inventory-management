@@ -47,7 +47,9 @@ const Dashboard = () => {
 								<TableCell align="right">{row.name}</TableCell>
 								<TableCell align="right">{row.quantity}</TableCell>
 								<TableCell align="right">{row.price}</TableCell>
-								<TableCell align="right"><button onClick={() => console.log(row._id)}>Edit</button></TableCell>
+								<TableCell align="right">
+									<button onClick={() => console.log(row._id)}>Edit</button>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
