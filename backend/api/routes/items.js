@@ -55,10 +55,11 @@ router.delete('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Item not found' });
         }
 
-        await item.remove();
+        await item.deleteOne();
         res.json({ message: 'Item removed' });
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
+        console.log(error)
     }
 });
 

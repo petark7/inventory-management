@@ -1,4 +1,4 @@
-import Inventory from '../pages/navigation-menu/Inventory';
+import Inventory from '../pages/navigation-menu/Inventory/Inventory';
 import Dashboard from '../pages/navigation-menu/Dashboard';
 import Transactions from '../pages/navigation-menu/Transactions';
 import NavigationMenu from '../components/NavigationMenu';

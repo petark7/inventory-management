@@ -25,7 +25,7 @@ apiClient.interceptors.response.use(
 	response => response,
 	async error => {
 		const originalRequest = error.config;
-		if (error.response && error.response.status === 401 && !originalRequest._retry) {
+		if (error.response && (error.response.status === 401 || error.response.status === 400) && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
 				const newAccessToken = await store.dispatch(refreshTokenRequest()).payload;
@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
 				originalRequest.headers.Authorization = newAccessToken;
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				console.log(refreshError)
+				console.log(refreshError);
 				return Promise.reject(refreshError);
 			}
 		}

@@ -99,7 +99,7 @@ const NavigationMenu = () => {
 							color="inherit"
 							sx={{ flexGrow: 1 }}
 						>
-							Dashboard
+							Inventory Management Platform
 						</Typography>
 						<IconButton color="inherit">
 							<UserMenu />
