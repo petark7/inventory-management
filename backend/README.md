@@ -8,7 +8,7 @@ This is a Node.js RESTful API for a simple shop. It uses MongoDB as the database
 
 1. Clone the repository
 2. Install dependencies: `npm install`
-3. Create a `.env` file in the root directory and add your MongoDB Atlas URL and JWT secret keys.
+3. Add your MongoDB and keys in the .env file
 
 ### Usage
 
