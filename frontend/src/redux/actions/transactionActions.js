@@ -1,19 +1,19 @@
 import {
-	FETCH_ITEMS_REQUEST,
-	FETCH_ITEMS_SUCCESS,
-	FETCH_ITEMS_FAILURE
+	FETCH_TRANSACTIONS_REQUEST,
+	FETCH_TRANSACTIONS_SUCCESS,
+	FETCH_TRANSACTIONS_FAILURE
 } from './types';
 
 export const fetchTransactionsRequest = () => ({
-	type: FETCH_ITEMS_REQUEST
+	type: FETCH_TRANSACTIONS_REQUEST
 });
 
 export const fetchTransactionsSuccess = items => ({
-	type: FETCH_ITEMS_SUCCESS,
+	type: FETCH_TRANSACTIONS_SUCCESS,
 	payload: items
 });
 
 export const fetchTransactionsFailure = error => ({
-	type: FETCH_ITEMS_FAILURE,
+	type: FETCH_TRANSACTIONS_FAILURE,
 	payload: error
 });

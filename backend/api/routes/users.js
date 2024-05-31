@@ -35,14 +35,14 @@ router.get('/', verifyToken, async (req, res) => {
 
 // Register User
 router.post('/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, fullName } = req.body;
     try {
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: 'User already exists' });
         }
-
-        user = new User({ email, password });
+        
+        user = new User({ email, password, fullName });
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

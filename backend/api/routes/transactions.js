@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Transaction = require('../models/transaction');
 const Item = require('../models/item');
+const User = require('../models/user');
+
 
 // Get All Transactions
 router.get('/', async (req, res) => {
@@ -13,7 +15,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Create New Transaction
 router.post('/', async (req, res) => {
     const { itemId, quantity, type, userId } = req.body;
     try {
@@ -22,22 +23,84 @@ router.post('/', async (req, res) => {
             return res.status(404).json({ message: 'Item not found' });
         }
 
-        const transaction = new Transaction({ item: itemId, quantity, type, createdBy: userId });
-        await transaction.save();
-
-        // Update item quantity
-        if (type === 'sale') {
-            item.quantity -= quantity;
-        } else if (type === 'restock') {
-            item.quantity += quantity;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
+
+        // Check if the transaction is a sale and if there is enough stock
+        if (type === 'sale' && item.quantity < quantity) {
+            return res.status(400).json({ message: 'Insufficient stock for sale' });
+        }
+
+        // Record the old quantity
+        const oldQuantity = item.quantity;
+
+        // Update item quantity based on transaction type
+        if (type === 'sale') {
+            item.quantity -= Number(quantity);
+        } else if (type === 'restock') {
+            item.quantity += Number(quantity);
+        }
+
+        // Save the updated item
         await item.save();
 
-        res.status(201).json(transaction);
+        // Create the transaction with the required format
+        const transaction = new Transaction({
+            item: {
+                _id: item._id,
+                name: item.name
+            },
+            quantity,
+            type,
+            oldQuantity,
+            newQuantity: item.quantity,
+            createdBy: {
+                _id: user._id,
+                name: user.fullName
+            }
+        });
+        await transaction.save();
+
+        // Prepare the response data
+        const response = {
+            item: {
+                _id: item._id,
+                name: item.name
+            },
+            _id: transaction._id,
+            date: transaction.date,
+            type: transaction.type,
+            oldQuantity: oldQuantity,
+            newQuantity: item.quantity,
+            createdBy: {
+                _id: user._id,
+                name: user.fullName
+            }
+        };
+
+        // Send the response
+        res.status(201).json(response);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({ error: 'Server error' });
     }
 });
+
+// Get Item by ID
+router.get('/item/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const item = await Item.findById(id);
+        if (!item) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+        res.json(item);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 
 module.exports = router;

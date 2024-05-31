@@ -2,27 +2,33 @@ const mongoose = require('mongoose');
 
 const TransactionSchema = new mongoose.Schema({
     item: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item',
-        required: true
+        _id: mongoose.Schema.Types.ObjectId,
+        name: String
     },
     quantity: {
         type: Number,
         required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
     },
     type: {
         type: String,
         enum: ['sale', 'restock'],
         required: true
     },
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    oldQuantity: {
+        type: Number,
         required: true
+    },
+    newQuantity: {
+        type: Number,
+        required: true
+    },
+    createdBy: {
+        _id: mongoose.Schema.Types.ObjectId,
+        name: String
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 
