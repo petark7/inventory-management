@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
@@ -12,28 +12,50 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { loginRequest } from '../../redux/actions/authActions';
+import useAuthRedirect from '../../hooks/useAuthRedirect';
 
 const defaultTheme = createTheme();
 
 const Login = () => {
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { accessToken, initialLoad } = useSelector(state => state.auth);
+	useAuthRedirect();
 
-	useEffect(() => {
-		if (accessToken && !initialLoad) {
-			navigate('/');
-		}
-	}, [accessToken, initialLoad, navigate]);
+	const [formValues, setFormValues] = useState({
+		email: '',
+		password: ''
+	});
+
+	const [errors, setErrors] = useState({});
+
+	const handleChange = e => {
+		const { name, value } = e.target;
+		setFormValues({
+			...formValues,
+			[name]: value
+		});
+	};
+
+	const validate = () => {
+		const temporaryErrors = {};
+		temporaryErrors.email = formValues.email ? '' : 'Email is required.';
+		temporaryErrors.email = /\S+@\S+\.\S+/.test(formValues.email) ? temporaryErrors.email : 'Email is not valid.';
+		temporaryErrors.password = formValues.password ? '' : 'Password is required.';
+		setErrors(temporaryErrors);
+		return Object.values(temporaryErrors).every(x => x === '');
+	};
 
 	const handleSubmit = async event => {
 		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		dispatch(loginRequest({
-			email: data.get('email'),
-			password: data.get('password')
-		}));
+		if (validate()) {
+			dispatch(loginRequest({
+				email: formValues.email,
+				password: formValues.password
+			}));
+		} else {
+			toast.error('Please fix the errors in the form.');
+		}
 	};
 
 	return (
@@ -66,6 +88,10 @@ const Login = () => {
 							label="Email Address"
 							name="email"
 							autoComplete="email"
+							value={formValues.email}
+							error={Boolean(errors.email)}
+							helperText={errors.email}
+							onChange={handleChange}
 						/>
 						<TextField
 							required
@@ -76,6 +102,10 @@ const Login = () => {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							value={formValues.password}
+							error={Boolean(errors.password)}
+							helperText={errors.password}
+							onChange={handleChange}
 						/>
 						<Button
 							fullWidth
