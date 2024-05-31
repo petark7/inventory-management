@@ -2,7 +2,14 @@
 
 ### Description
 
-This is a Node.js RESTful API for a simple shop. It uses MongoDB as the database and Express.js as the web framework.
+This project is a RESTful API built using Node.js and Express.js that serves as a backend for managing users, transactions, and items in a simple inventory management system. It leverages MongoDB for data storage and JWT (JSON Web Tokens) for authentication and authorization.
+
+## Technologies Used
+
+- **Node.js**: A JavaScript runtime for building server-side applications.
+- **Express.js**: A web application framework for Node.js used for building RESTful APIs.
+- **MongoDB**: A NoSQL database used for storing application data.
+- **JWT (JSON Web Tokens)**: A method for securely transmitting information between parties as a JSON object.
 
 ### Installation
 
