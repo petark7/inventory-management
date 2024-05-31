@@ -13,10 +13,7 @@ const itemRoutes = require('./api/routes/items')
 const transactionRoutes = require('./api/routes/transactions')
 const { verifyToken } = require('./utils/jwt');
 
-mongoose.connect('mongodb+srv://petark7:'+ 
-process.env.MONGO_ATLAS_PASSWORD + 
-    '@nodejs-tutorial.pivaveq.mongodb.net/?retryWrites=true&w=majority&appName=nodejs-tutorial'
-)
+mongoose.connect(process.env.MONGO_ATLAS_URL)
 
 const corsOptions = {
     origin: 'http://localhost:5173', // Replace with client's origin
