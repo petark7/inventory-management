@@ -22,6 +22,15 @@ The project helps with inventory management within a warehouse, allowing for man
 - Updating existing item details.
 - Deletion of items from the inventory.
 
+## 2. Screenshots
+![image](https://github.com/petark7/inventory-management/assets/73505122/6195ad2e-7e3b-4c4e-a097-30f6accf737e)
+![image](https://github.com/petark7/inventory-management/assets/73505122/65938952-3e69-4ced-aa63-5246fbb7b608)
+![image](https://github.com/petark7/inventory-management/assets/73505122/9f481a2a-3cdc-4e52-9392-a4e63ce0b3d1)
+![image](https://github.com/petark7/inventory-management/assets/73505122/bf6fed1c-ffb6-42eb-9b64-6c59427c82b6)
+![image](https://github.com/petark7/inventory-management/assets/73505122/fa2dd42d-9775-495c-9f39-d5020d26ef26)
+![image](https://github.com/petark7/inventory-management/assets/73505122/121551a8-410b-47e0-b044-dacfe81a1d46)
+![image](https://github.com/petark7/inventory-management/assets/73505122/52646066-6a65-400b-ba35-1ff8e1bd14ad)
+
 ## 2. Installation
 
 1. Clone the repository
